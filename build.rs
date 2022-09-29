@@ -1,13 +1,5 @@
-extern crate cmake;
-use cmake::Config;
+extern crate pkg_config;
 
 fn main() {
-    let dst = Config::new(".")
-        .define("GLFW_BUILD_EXAMPLES", "OFF")
-        .define("GLFW_BUILD_TESTS", "OFF")
-        .define("GLFW_BUILD_DOCS", "OFF")
-        .define("CMAKE_INSTALL_LIBDIR", "lib")
-        .build();
-    println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
-    println!("cargo:rustc-link-lib=dylib=glfw3");
+    pkg_config::probe_library("glfw3").unwrap();
 }

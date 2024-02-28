@@ -1,7 +1,15 @@
 extern crate cmake;
+extern crate pkg_config;
+
 use cmake::Config;
 
 fn main() {
+    if pkg_config::probe_library("glfw3").is_ok() {
+        // We got the library via pkg_config, we don't need to try and build it
+        // below.
+        return;
+    }
+
     let mut cfg = Config::new("glfw");
 
     cfg.define("GLFW_BUILD_EXAMPLES", "OFF")
